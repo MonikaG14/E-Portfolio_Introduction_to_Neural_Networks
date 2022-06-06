@@ -11,7 +11,11 @@ I am using:
 - Pycharm as an IDE
 - Matplotlib to plot the error function while training the neural network
 - NumPy for its great math functions
-- TensorFlow for some more examples at the end of my demo
+- TensorFlow and Keras for some more examples at the end of my demo
+
+![grafik](https://user-images.githubusercontent.com/85937393/172236658-2788c635-7b2a-4498-9690-66bf7420db63.png)
+
+
 
 ## Neural Network
 Neural networks, also known as artificial neural networks (ANN) or simulated neural networks (SNN), are a subset of machine learning and are at the heart of deep learning algorithms. Their name and structure are inspired by the human brain, mimicking the way biological neurons transmit signals to one another.
