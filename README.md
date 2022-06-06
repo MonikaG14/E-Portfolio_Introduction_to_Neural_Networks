@@ -1,7 +1,11 @@
 # E-Portfolio_Introduction_to_Neural_Networks
 
-In this E-Portfolio I will introduce to you the basics of Neural Networks. 
-For this I am using:
+In this E-Portfolio I will introduce to you the basics of Neural Networks.
+
+Presentation slides:
+[Introduction to NN.pptx](https://github.com/MonikaG14/E-Portfolio_Introduction_to_Neural_Networks/files/8846386/Introduction.to.NN.pptx)
+
+I am using:
 
 - Python for coding
 - Pycharm as an IDE
