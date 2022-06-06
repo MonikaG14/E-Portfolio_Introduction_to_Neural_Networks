@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Here we will get to know and test the basics of NN such as
 # weights and dot product

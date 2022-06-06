@@ -1,4 +1,4 @@
-#Imports
+# Imports
 import os
 import numpy as np
 from tensorflow.keras.utils import load_img
@@ -6,10 +6,12 @@ from tensorflow.keras.utils import img_to_array
 from tensorflow.keras.utils import array_to_img
 import matplotlib.pyplot as plt
 import tensorflow as tf
+
 keras = tf.keras
 
 import tensorflow_datasets as tfds
-#tfds.disable_progress_bar()
+
+# tfds.disable_progress_bar()
 
 # split the data manually into 80% training, 10% testing, 10% validation
 (raw_train, raw_validation, raw_test), metadata = tfds.load(
@@ -23,20 +25,22 @@ get_label_name = metadata.features['label'].int2str  # creates a function object
 
 # display 2 images from the dataset
 for image, label in raw_train.take(2):
-  plt.figure()
-  plt.imshow(image)
-  plt.title(get_label_name(label))
+    plt.figure()
+    plt.imshow(image)
+    plt.title(get_label_name(label))
 
-IMG_SIZE = 160 # All images will be resized to 160x160
+IMG_SIZE = 160  # All images will be resized to 160x160
+
 
 def format_example(image, label):
-  """
+    """
   returns an image that is reshaped to IMG_SIZE
   """
-  image = tf.cast(image, tf.float32)
-  image = (image/127.5) - 1
-  image = tf.image.resize(image, (IMG_SIZE, IMG_SIZE))
-  return image, label
+    image = tf.cast(image, tf.float32)
+    image = (image / 127.5) - 1
+    image = tf.image.resize(image, (IMG_SIZE, IMG_SIZE))
+    return image, label
+
 
 train = raw_train.map(format_example)
 validation = raw_validation.map(format_example)
@@ -44,10 +48,9 @@ print(validation)
 test = raw_test.map(format_example)
 
 for image, label in train.take(2):
-  plt.figure()
-  plt.imshow(image)
-  plt.title(get_label_name(label))
-
+    plt.figure()
+    plt.imshow(image)
+    plt.title(get_label_name(label))
 
 BATCH_SIZE = 32
 SHUFFLE_BUFFER_SIZE = 1000
@@ -57,41 +60,39 @@ validation_batches = validation.batch(BATCH_SIZE)
 test_batches = test.batch(BATCH_SIZE)
 
 for img, label in raw_train.take(2):
-  print("Original shape:", img.shape)
+    print("Original shape:", img.shape)
 
 for img, label in train.take(2):
-  print("New shape:", img.shape)
+    print("New shape:", img.shape)
 
 IMG_SHAPE = (IMG_SIZE, IMG_SIZE, 3)
 
-print (IMG_SHAPE)
+print(IMG_SHAPE)
 
 # Create the base model from the pre-trained model MobileNet V2
 base_model = tf.keras.applications.MobileNetV2(input_shape=IMG_SHAPE,
                                                include_top=False,
                                                weights='imagenet')
 
-#print(base_model.summary())
 
 for image, _ in train_batches.take(1):
-   pass
+    pass
 
 feature_batch = base_model(image)
 print(feature_batch.shape)
 
 base_model.trainable = False
-#print(base_model.summary())
+
 
 global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
 
 prediction_layer = keras.layers.Dense(1, activation='relu')
 model = tf.keras.Sequential([
-  base_model,
-  global_average_layer,
-  prediction_layer
+    base_model,
+    global_average_layer,
+    prediction_layer
 ])
 
-#print(model.summary())
 
 base_learning_rate = 0.0001
 model.compile(optimizer=tf.keras.optimizers.RMSprop(lr=base_learning_rate),
@@ -99,9 +100,9 @@ model.compile(optimizer=tf.keras.optimizers.RMSprop(lr=base_learning_rate),
               metrics=['accuracy'])
 
 initial_epochs = 3
-validation_steps=20
+validation_steps = 20
 
-loss0, accuracy0 = model.evaluate(validation_batches, steps = validation_steps)
+loss0, accuracy0 = model.evaluate(validation_batches, steps=validation_steps)
 
 # Now we can train it on our images
 history = model.fit(train_batches,
@@ -112,7 +113,5 @@ acc = history.history['accuracy']
 print(acc)
 
 model.save("dogs_vs_cats.h5")  # we can save the model and reload it at anytime in the future
-new_model = tf.keras.models.load_model('dogs_vs_cats.h5')
 
 print("SAVED")
-
